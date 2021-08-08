@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<head>
+    <script src= "http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <form method="GET" action="/dashboard">
+        <label>
+            <input type="text" name="q" id="q" placeholder="search-query"/>
+        </label>
+        <button type="submit">Search</button>
+    </form>
+
+    {{if ne (len .SearchResults) 0}}
+    <h2>Search Results</h2>
+    <ul>
+        {{range .SearchResults}}
+        <li>
+            <p>{{.Name}}</p>
+            <p>Director: {{.Director}}</p>
+            <p>Duration: {{.Duration}}</p>
+            <p>Description: {{.Description}}</p>
+        </li>
+        {{end}}
+    </ul>
+    {{end}}
+
+    <p> <a href="#" id="add-movie-btn">Add movie</a></p>
+    <form id="add-movie" method="POST" action="/add-movie">
+        <p><input type="text" name="name" id="name" placeholder="Movie Name"/></p>
+        <p><input type="text" name="director" id="director" placeholder="Director"/></p>
+        <p><input type="text" name="duration" id="duration" placeholder="Duration"/></p>
+        <p><textarea type="text" name="description" id="name" placeholder="Description"></textarea></p>
+        <button type="submit">Add Movie</button>
+    </form>
+
+    <p><a href="#" id="add-timings-btn">Add Timings</a></p>
+    <form id="add-timings" method="POST" action="/add-timings">
+        <p><label>
+            Search movie:
+            <select name = "id">
+                {{range .AllMovies}}
+            {{end}}
+            </select>
+        </label></p>
+        <p><input type="text" name="time" placeholder="Time"/></p>
+        <p><input type="number" name="price" placeholder="Price"/></p>
+        <p><input type="number" name="total" placeholder="Total Tickets"/></p>
+        <button type="submit">Add Timings</button>
+    </form>
+    
+    <p><a href="#" id="purchase-tickets-btn">Purchase TIcket</a></p>
+    <form id="purchase-tickets" method="POST" action="/purchase-tickets">
+        <button type="submit">Purchase tickets</button>
+    </form>
+
+
+    <script>
+
+        var addMovieElem = $("#add-movie");
+        var addTimingsElem = $("#add-timings");
+        var purchaseTicketsElem = $("purchase-tickets");
+
+        function addMovie(e){
+            e.preventDefault();
+            addMovieElem.show();
+            addTimingsElem.hide();
+            purchaseTicketsElem.hide();
+        }
+        $("#add-movie-btn").click(addMovie);
+
+        function addTimings(e){
+            e.preventDefault();
+            addMovieElem.hide();
+            addTimingsElem.show();
+            purchaseTicketsElem.hide();
+        }
+        $("#add-timings-btn").click(addTimings);
+
+        function purchaseTickets(e){
+            e.preventDefault();
+            addMovieElem.hide();
+            addTimingsElem.hide();
+            purchaseTicketsElem.show();
+        }
+        $("#purchase-tickets-btn").click(purchaseTickets);
+    </script>
+
+
+</body>
